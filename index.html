@@ -1,0 +1,42 @@
+<!doctype HTML>
+<html>
+    <head>
+      <title>Arp</title>
+      <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <div id="main"></div>
+        <script type="text/javascript" src="main.js"></script>
+        <script>
+         "use strict"
+         var app = Elm.Instrument.fullscreen();
+
+         var context = new (window.AudioContext || window.webkitAudioContext)();
+
+         /* function playNote (frequency) {*/
+         function playNote (frequency, duration) {
+           var osc = context.createOscillator();
+           var gain = context.createGain();
+           osc.type = 'sine';
+           osc.frequency.value = frequency;
+
+           osc.connect(gain);
+           gain.connect(context.destination);
+
+           var now = context.currentTime;
+           osc.start();
+           osc.stop(now + duration);
+         };
+
+         app.ports.play.subscribe(function (args) {
+           var frequency = args.frequency;
+           var duration = args.duration;
+           console.log(args);
+           playNote(frequency, duration);
+         });
+
+        </script>
+    </body>
+
+</html>
