@@ -20,8 +20,8 @@ main =
 
 type alias Model =
     { phrase : Phrase
-    , phraseLeft : Phrase
-    , sustain : Float
+    , ticks : Int
+    , clock : Int
     }
 
 
@@ -32,18 +32,19 @@ type alias Phrase =
 type alias Note =
     { frequency : Float
     , duration : Float
+    , tick : Int
     }
 
 
 model =
     { phrase =
-        [ Note 440 1
-        , Note 660 0.25
-        , Note 880 0.25
-        , Note 660 0.5
+        [ Note 440 1 1
+        , Note 660 0.25 2
+        , Note 880 0.5 3
+        , Note 660 0.25 4
         ]
-    , phraseLeft = []
-    , sustain = 0
+    , ticks = 4
+    , clock = 1
     }
 
 
@@ -70,10 +71,9 @@ update msg model =
     case msg of
         Tick time ->
             { model
-                | phraseLeft = loop model.phrase model.phraseLeft
-                , sustain = duration (List.head model.phraseLeft)
+                | clock = increment model.clock
             }
-                ! [ playNote model.phraseLeft ]
+                ! [ Cmd.batch (playNote model.phrase model.clock) ]
 
 
 
@@ -84,7 +84,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ h3 [] [ text (showPhrase model.phrase) ]
-        , h3 [] [ text (showPhrase model.phraseLeft) ]
+        , h3 [] [ text  (showClock model.clock) ]
         ]
 
 
@@ -94,34 +94,25 @@ view model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    every (second * model.sustain) Tick
+    every second Tick
 
 
 
 -- CMDS
 
 
-playNote : Phrase -> Cmd msg
-playNote phraseLeft =
-    case List.head phraseLeft of
-        Just a ->
-            play a
-
-        Nothing ->
-            Cmd.none
+playNote : Phrase -> Int -> List (Cmd msg)
+playNote phrase clock = List.filter (\n -> .tick n == clock) phrase
+                      |> List.map play
 
 
-loop : Phrase -> Phrase -> Phrase
-loop phrase phraseLeft =
-    case phraseLeft of
-        [] ->
-            phrase
-
-        [ a ] ->
-            phrase
-
-        n :: ns ->
-            ns
+increment : Int -> Int
+increment clock =
+    case clock of
+          4   ->
+            1
+          _   ->
+           clock + 1
 
 
 frequency : Maybe Note -> Float
@@ -149,3 +140,11 @@ showPhrase phrase =
     List.map .frequency phrase
         |> List.map toString
         |> String.join ", "
+
+
+-- hack to show clock correctly
+showClock : Int -> String
+showClock clock =
+    case clock % 4 of
+        1 -> toString 4
+        _ -> toString (clock - 1)
