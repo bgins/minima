@@ -38,12 +38,12 @@ type alias Note =
 
 model =
     { phrase =
-        [ Note 440 2 1
-        , Note 660 1 1
-        , Note 880 1 1
-        , Note 660 0.5 2
-        , Note 660 1.5 3
-        , Note 440 0.5 4
+        [ Note 440 4 1
+        , Note 660 4 3
+        , Note 880 0.5 1
+        , Note 1320 0.5 2
+        , Note 1760 0.5 3
+        , Note 1320 0.5 4
         ]
     , ticks = 4
     , clock = 1

@@ -16,33 +16,48 @@
 
          var context = new (window.AudioContext || window.webkitAudioContext)();
 
+         var waveform = 'sine',
+             filterType = 'lowpass',
+             cutoff = 3000,
+             gain = 0.2;
+
          var filter = context.createBiquadFilter();
-         filter.type = 'lowpass';
-         filter.frequency.value = 3000;
+         filter.type = filterType;
+         filter.frequency.value = cutoff;
          filter.connect(context.destination);
 
 
          function playNote (frequency, duration) {
+           // console.log(frequency + ", " + duration);
+
+           // intstantiate and initialize nodes
            var osc = context.createOscillator();
            var amp = context.createGain();
-
-           osc.type = 'triangle';
+           osc.type = waveform;
            osc.frequency.value = frequency;
-           amp.gain.value = 0.2;
+           amp.gain.value = gain;
 
+           // routing
            osc.connect(amp);
            amp.connect(filter);
 
-           console.log(frequency + ", " + duration);
+           // set timing for note event then play
            var now = context.currentTime;
+           amp.gain.cancelScheduledValues(now);
+           amp.gain.linearRampToValueAtTime(gain + 0.05, now + 0.03);  // attack
+           amp.gain.setTargetAtTime(gain, now + 0.03, 0.01);  // decay
+           amp.gain.setValueAtTime(gain, (duration * 0.99));  // set mark for release
+           amp.gain.exponentialRampToValueAtTime(0.0001, now + duration);  // release
+
+
            osc.start();
-           osc.stop(now + duration);
+           osc.stop(now + duration + (duration * 0.5));  // overshoot duration for release
          };
 
          app.ports.play.subscribe(function (args) {
            var frequency = args.frequency;
            var duration = args.duration;
-           console.log(args);
+           // console.log(args);
            playNote(frequency, duration);
          });
 
