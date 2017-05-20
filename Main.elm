@@ -66,7 +66,6 @@ type Msg
 
 
 port play : Note -> Cmd msg
--- port play : List Note -> Cmd msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -77,7 +76,6 @@ update msg model =
                 | clock = increment model.clock
             }
                 ! [ Cmd.batch (playNote model.phrase model.clock) ]
-                -- ! [ playNote model.phrase model.clock ]
 
 
 
@@ -106,13 +104,14 @@ subscriptions model =
 
 
 playNote : Phrase -> Int -> List (Cmd msg)
--- playNote : Phrase -> Int -> Cmd msg
-
-
 playNote phrase clock =
     List.filter (\n -> .tick n == clock) phrase
         |> List.map play
-        -- |> play
+
+
+
+-- |> play
+
 
 increment : Int -> Int
 increment clock =

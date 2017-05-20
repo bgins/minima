@@ -22,7 +22,6 @@
          filter.connect(context.destination);
 
 
-         /* function playNote (frequency) {*/
          function playNote (frequency, duration) {
            var osc = context.createOscillator();
            var amp = context.createGain();
@@ -33,7 +32,6 @@
 
            osc.connect(amp);
            amp.connect(filter);
-           /* gain.connect(context.destination);*/
 
            console.log(frequency + ", " + duration);
            var now = context.currentTime;
@@ -44,18 +42,9 @@
          app.ports.play.subscribe(function (args) {
            var frequency = args.frequency;
            var duration = args.duration;
-           /* console.log(args);*/
+           console.log(args);
            playNote(frequency, duration);
          });
-
-         /* app.ports.play.subscribe(function (args) {*/
-         /* args.forEach(function(note) {*/
-         /* var frequency = note.frequency;*/
-         /* var duration = note.duration;*/
-         /* console.log(note);*/
-         /* playNote(frequency, duration);*/
-         /* });*/
-         /* });*/
 
         </script>
     </body>
