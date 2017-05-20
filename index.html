@@ -16,16 +16,26 @@
 
          var context = new (window.AudioContext || window.webkitAudioContext)();
 
+         var filter = context.createBiquadFilter();
+         filter.type = 'lowpass';
+         filter.frequency.value = 3000;
+         filter.connect(context.destination);
+
+
          /* function playNote (frequency) {*/
          function playNote (frequency, duration) {
            var osc = context.createOscillator();
-           var gain = context.createGain();
-           osc.type = 'sine';
+           var amp = context.createGain();
+
+           osc.type = 'triangle';
            osc.frequency.value = frequency;
+           amp.gain.value = 0.2;
 
-           osc.connect(gain);
-           gain.connect(context.destination);
+           osc.connect(amp);
+           amp.connect(filter);
+           /* gain.connect(context.destination);*/
 
+           console.log(frequency + ", " + duration);
            var now = context.currentTime;
            osc.start();
            osc.stop(now + duration);
@@ -34,9 +44,18 @@
          app.ports.play.subscribe(function (args) {
            var frequency = args.frequency;
            var duration = args.duration;
-           console.log(args);
+           /* console.log(args);*/
            playNote(frequency, duration);
          });
+
+         /* app.ports.play.subscribe(function (args) {*/
+         /* args.forEach(function(note) {*/
+         /* var frequency = note.frequency;*/
+         /* var duration = note.duration;*/
+         /* console.log(note);*/
+         /* playNote(frequency, duration);*/
+         /* });*/
+         /* });*/
 
         </script>
     </body>

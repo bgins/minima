@@ -38,10 +38,12 @@ type alias Note =
 
 model =
     { phrase =
-        [ Note 440 1 1
-        , Note 660 0.25 2
-        , Note 880 0.5 3
-        , Note 660 0.25 4
+        [ Note 440 2 1
+        , Note 660 1 1
+        , Note 880 1 1
+        , Note 660 0.5 2
+        , Note 660 1.5 3
+        , Note 440 0.5 4
         ]
     , ticks = 4
     , clock = 1
@@ -64,6 +66,7 @@ type Msg
 
 
 port play : Note -> Cmd msg
+-- port play : List Note -> Cmd msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -74,6 +77,7 @@ update msg model =
                 | clock = increment model.clock
             }
                 ! [ Cmd.batch (playNote model.phrase model.clock) ]
+                -- ! [ playNote model.phrase model.clock ]
 
 
 
@@ -84,7 +88,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ h3 [] [ text (showPhrase model.phrase) ]
-        , h3 [] [ text  (showClock model.clock) ]
+        , h3 [] [ text (showClock model.clock) ]
         ]
 
 
@@ -102,17 +106,22 @@ subscriptions model =
 
 
 playNote : Phrase -> Int -> List (Cmd msg)
-playNote phrase clock = List.filter (\n -> .tick n == clock) phrase
-                      |> List.map play
+-- playNote : Phrase -> Int -> Cmd msg
 
+
+playNote phrase clock =
+    List.filter (\n -> .tick n == clock) phrase
+        |> List.map play
+        -- |> play
 
 increment : Int -> Int
 increment clock =
     case clock of
-          4   ->
+        4 ->
             1
-          _   ->
-           clock + 1
+
+        _ ->
+            clock + 1
 
 
 frequency : Maybe Note -> Float
@@ -142,9 +151,15 @@ showPhrase phrase =
         |> String.join ", "
 
 
+
 -- hack to show clock correctly
+
+
 showClock : Int -> String
 showClock clock =
     case clock % 4 of
-        1 -> toString 4
-        _ -> toString (clock - 1)
+        1 ->
+            toString 4
+
+        _ ->
+            toString (clock - 1)
