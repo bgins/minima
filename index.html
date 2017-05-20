@@ -41,17 +41,16 @@
            osc.connect(amp);
            amp.connect(filter);
 
-           // set timing for note event then play
+           // set timing and amp envelope
            var now = context.currentTime;
            amp.gain.cancelScheduledValues(now);
            amp.gain.linearRampToValueAtTime(gain + 0.05, now + 0.03);  // attack
            amp.gain.setTargetAtTime(gain, now + 0.03, 0.01);  // decay
-           amp.gain.setValueAtTime(gain, (duration * 0.99));  // set mark for release
+           amp.gain.setValueAtTime(gain, now + 0.03);  // set mark for release
            amp.gain.exponentialRampToValueAtTime(0.0001, now + duration);  // release
 
-
            osc.start();
-           osc.stop(now + duration + (duration * 0.5));  // overshoot duration for release
+           osc.stop(now + duration);  // overshoot duration for release
          };
 
          app.ports.play.subscribe(function (args) {
