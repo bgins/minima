@@ -27,12 +27,6 @@ update msg model =
                 |> updateModel (\model -> { model | score = read model.voice model.score })
 
 
-playNotes : Score -> Int -> List (Cmd msg)
-playNotes score clock =
-    List.filter (\n -> .tick n == clock) score
-        |> List.map play
-
-
 increment : Int -> Int
 increment clock =
     case clock of
@@ -41,6 +35,12 @@ increment clock =
 
         _ ->
             clock + 1
+
+
+playNotes : Score -> Int -> List (Cmd msg)
+playNotes score clock =
+    List.filter (\n -> .tick n == clock) score
+        |> List.map play
 
 
 read : Phrase -> Score -> Score
@@ -69,23 +69,3 @@ rotate voice =
 
         HalfDotQuart ->
             { voice | pattern = Whole }
-
-
-frequency : Maybe Note -> Float
-frequency note =
-    case note of
-        Just note ->
-            note.frequency
-
-        Nothing ->
-            30000
-
-
-duration : Maybe Note -> Float
-duration note =
-    case note of
-        Just note ->
-            note.duration
-
-        Nothing ->
-            0
