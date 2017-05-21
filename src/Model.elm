@@ -9,8 +9,9 @@ type alias Model =
     }
 
 
+
 -- model =
---     { phrase =
+--     { score =
 --         [ Note 440 4 1
 --         , Note 660 4 3
 --         , Note 880 0.5 1
@@ -18,18 +19,15 @@ type alias Model =
 --         , Note 1760 0.5 3
 --         , Note 1320 0.5 4
 --         ]
+--     , voice = Phrase 440 HalfDotQuart
 --     , ticks = 4
 --     , clock = 1
 --     }
 
+
 model =
     { score =
         [ Note 440 4 1
-        , Note 660 4 3
-        , Note 880 0.5 1
-        , Note 1320 0.5 2
-        , Note 1760 0.5 3
-        , Note 1320 0.5 4
         ]
     , voice = Phrase 440 Whole
     , ticks = 4
@@ -40,10 +38,10 @@ model =
 type alias Score =
     List Note
 
+
 type alias Phrase =
     { frequency : Float
     , pattern : Pattern
-    -- , some identifier to access dom element?
     }
 
 
@@ -54,53 +52,15 @@ type alias Note =
     }
 
 
-
--- type alias Phrase =
---     List Note
-
-
 type Pattern
     = Whole
     | HalfDotQuart
-    -- | QuartHalfDot
-    -- | HalfHalf
-    -- | HalfQuartQuart
-    -- | QuartHalfQuart
-    -- | QuartQuartHalf
-    -- | Quarters
 
 
 
--- | Nothing
-
-
--- type alias Whole =
---     List Maybe Note
-
-
--- type alias HalfDotQuart =
---     List Maybe Note
-
-
--- type alias QuartHalfDot =
---     List Maybe Note
-
-
--- type alias HalfHalf =
---     List Maybe Note
-
-
--- type alias HalfQuartQuart =
---     List Maybe Note
-
-
--- type alias QuartHalfQuart =
---     List Maybe Note
-
-
--- type alias QuartQuartHalf =
---     List Maybe Note
-
-
--- type alias Quarters =
---     List Maybe Note
+-- | QuartHalfDot
+-- | HalfHalf
+-- | HalfQuartQuart
+-- | QuartHalfQuart
+-- | QuartQuartHalf
+-- | Quarters

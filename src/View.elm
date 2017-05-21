@@ -1,16 +1,53 @@
 module View exposing (..)
 
 import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 import Model exposing (Model, Phrase, Score)
-import Update exposing (Msg)
+import Update exposing (..)
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ h3 [] [ text (showScore model.score) ]
-        , h3 [] [ text (showClock model.clock) ]
+        [ div [ class "row" ]
+            [ div [ class "columns" ]
+                [ h3 [] [ text (showScore model.score) ] ]
+            ]
+        , div [ class "row" ]
+            [ div [ class "columns" ]
+                [ h3 [] [ text (showClock model.clock) ] ]
+            ]
+        , showPatttern model.voice
         ]
+
+
+showPatttern : Phrase -> Html Msg
+showPatttern voice =
+    case voice.pattern of
+        Model.Whole ->
+            div [ class "row align-center" ]
+                [ div [ class "column small-4" ]
+                    [ a [ class "expanded button" ] []
+                    ]
+                , div [ class "column small-1" ]
+                    [ a [ class "expanded warning button", onClick Rotate ] []
+                    ]
+                ]
+
+        Model.HalfDotQuart ->
+            div [ class "row align-center" ]
+                [ div [ class "column small-3" ]
+                    [ a [ class "expanded button" ] []
+                    ]
+                , div [ class "column small-1" ]
+                    [ a [ class "expanded button" ] []
+                    ]
+                , div [ class "column small-1" ]
+                    [ a [ class "expanded warning button", onClick Rotate ] []
+                    ]
+                ]
+
 
 
 -- showPhrase : Phrase -> String
@@ -18,6 +55,7 @@ view model =
 --     List.map .frequency phrase
 --         |> List.map toString
 --         |> String.join ", "
+
 
 showScore : Score -> String
 showScore score =

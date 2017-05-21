@@ -3,26 +3,12 @@ module Update exposing (..)
 import Time exposing (Time)
 import Model exposing (..)
 import Ports exposing (..)
-
-
--- type Msg
---     = Tick Time
+import Update.Extra exposing (updateModel)
 
 
 type Msg
     = Tick Time
-    | Rotate Pattern
-
-
-
--- update : Msg -> Model -> ( Model, Cmd Msg )
--- update msg model =
---     case msg of
---         Tick time ->
---             { model
---                 | clock = increment model.clock
---             }
---                 ! [ Cmd.batch (playNote model.phrase model.clock) ]
+    | Rotate
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -34,25 +20,11 @@ update msg model =
             }
                 ! [ Cmd.batch (playNotes model.score model.clock) ]
 
-        -- Rotate pattern phrase ->
-        --     { model
-        --         | score = read pattern phrase model.score
-        --         , voice = rotate model.voice pattern
-        --     }
-        --         ! [ Cmd.none ]
-        Rotate pattern ->
-            { model
-                | score = read pattern model.voice model.score
-                , voice = rotate model.voice pattern
-            }
-                ! [ Cmd.none ]
-
-
-
--- playNote : Phrase -> Int -> List (Cmd msg)
--- playNote phrase clock =
---     List.filter (\n -> .tick n == clock) phrase
---         |> List.map play
+        Rotate ->
+            model
+                ! []
+                |> updateModel (\model -> { model | voice = rotate model.voice })
+                |> updateModel (\model -> { model | score = read model.voice model.score })
 
 
 playNotes : Score -> Int -> List (Cmd msg)
@@ -71,36 +43,32 @@ increment clock =
             clock + 1
 
 
-read : Pattern -> Phrase -> Score -> Score
-read pattern phrase score =
-    case pattern of
+read : Phrase -> Score -> Score
+read voice score =
+    case voice.pattern of
         Whole ->
-            filterFrequency phrase score
-                |> (++) [Note (.frequency phrase) 4 1 ]
+            filterFrequency voice score
+                |> (++) [ Note (.frequency voice) 4 1 ]
 
         HalfDotQuart ->
-            filterFrequency phrase score
-                |> (++) [Note (.frequency phrase) 3 1 ]
-                |> (++) [ Note (.frequency phrase) 1 4 ]
+            filterFrequency voice score
+                |> (++) [ Note (.frequency voice) 3 1 ]
+                |> (++) [ Note (.frequency voice) 1 4 ]
+
 
 filterFrequency : Phrase -> Score -> Score
 filterFrequency phrase score =
-            List.filter (\n -> .frequency n /= .frequency phrase) score
+    List.filter (\n -> .frequency n /= .frequency phrase) score
 
 
-
--- clean out note events, add in new ones
--- how to handle rests? Separate function?
-
-
-rotate : Phrase -> Pattern -> Phrase
-rotate voice pattern =
-    case pattern of
+rotate : Phrase -> Phrase
+rotate voice =
+    case voice.pattern of
         Whole ->
             { voice | pattern = HalfDotQuart }
 
         HalfDotQuart ->
-            { voice | pattern = HalfDotQuart }
+            { voice | pattern = Whole }
 
 
 frequency : Maybe Note -> Float
