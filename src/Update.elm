@@ -75,7 +75,17 @@ read : Pattern -> Phrase -> Score -> Score
 read pattern phrase score =
     case pattern of
         Whole ->
-            []
+            filterFrequency phrase score
+                |> (++) [Note (.frequency phrase) 4 1 ]
+
+        HalfDotQuart ->
+            filterFrequency phrase score
+                |> (++) [Note (.frequency phrase) 3 1 ]
+                |> (++) [ Note (.frequency phrase) 1 4 ]
+
+filterFrequency : Phrase -> Score -> Score
+filterFrequency phrase score =
+            List.filter (\n -> .frequency n /= .frequency phrase) score
 
 
 
@@ -87,6 +97,9 @@ rotate : Phrase -> Pattern -> Phrase
 rotate voice pattern =
     case pattern of
         Whole ->
+            { voice | pattern = HalfDotQuart }
+
+        HalfDotQuart ->
             { voice | pattern = HalfDotQuart }
 
 

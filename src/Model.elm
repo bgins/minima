@@ -31,6 +31,7 @@ model =
         , Note 1760 0.5 3
         , Note 1320 0.5 4
         ]
+    , voice = Phrase 440 Whole
     , ticks = 4
     , clock = 1
     }
@@ -42,7 +43,7 @@ type alias Score =
 type alias Phrase =
     { frequency : Float
     , pattern : Pattern
-    -- , some identifier to access dom element
+    -- , some identifier to access dom element?
     }
 
 
@@ -61,12 +62,12 @@ type alias Note =
 type Pattern
     = Whole
     | HalfDotQuart
-    | QuartHalfDot
-    | HalfHalf
-    | HalfQuartQuart
-    | QuartHalfQuart
-    | QuartQuartHalf
-    | Quarters
+    -- | QuartHalfDot
+    -- | HalfHalf
+    -- | HalfQuartQuart
+    -- | QuartHalfQuart
+    -- | QuartQuartHalf
+    -- | Quarters
 
 
 
