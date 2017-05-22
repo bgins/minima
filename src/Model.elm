@@ -3,7 +3,10 @@ module Model exposing (..)
 
 type alias Model =
     { score : Score
-    , voice : Phrase
+    , root : Phrase
+    , third : Phrase
+    , fifth : Phrase
+    , octave : Phrase
     , ticks : Int
     , clock : Int
     }
@@ -29,7 +32,10 @@ model =
     { score =
         [ Note 440 4 1
         ]
-    , voice = Phrase 440 Whole
+    , root = Phrase "root" 440 Whole
+    , third = Phrase "third" 386.31 Whole
+    , fifth = Phrase "fifth" 660 Whole
+    , octave = Phrase "octave" 880 Whole
     , ticks = 4
     , clock = 1
     }
@@ -40,7 +46,8 @@ type alias Score =
 
 
 type alias Phrase =
-    { frequency : Float
+    { id : String
+    , frequency : Float
     , pattern : Pattern
     }
 

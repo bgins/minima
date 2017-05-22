@@ -2,9 +2,16 @@ body {
   background: #f2eee2;
 }
 
+h1 {
+  font-family: Cinzel;
+  font-size: 4rem;
+  text-align: center;
+  margin: 1rem 0 2rem 0;
+}
+
 h3 {
   font-family: Cinzel;
-  font-size: 3rem;
+  font-size: 2.5rem;
   text-align: center;
 }
 

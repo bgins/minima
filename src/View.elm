@@ -12,13 +12,17 @@ view model =
     div []
         [ div [ class "row" ]
             [ div [ class "columns" ]
+                [ h1 [] [ text "mimina" ] ]
+            ]
+        , showPatttern model.root
+        , div [ class "row" ]
+            [ div [ class "columns" ]
                 [ h3 [] [ text (showScore model.score) ] ]
             ]
         , div [ class "row" ]
             [ div [ class "columns" ]
                 [ h3 [] [ text (showClock model.clock) ] ]
             ]
-        , showPatttern model.voice
         ]
 
 
@@ -28,14 +32,14 @@ showPatttern voice =
         Model.Whole ->
             div [ class "row align-center" ]
                 [ whole
-                , rotateArrow
+                , rotateVoice voice
                 ]
 
         Model.HalfDotQuart ->
             div [ class "row align-center" ]
                 [ halfDot
                 , quarter
-                , rotateArrow
+                , rotateVoice voice
                 ]
 
 
@@ -72,10 +76,10 @@ rest =
     div [ class "column small-1" ] [ text "\x2002" ]
 
 
-rotateArrow : Html Msg
-rotateArrow =
+rotateVoice : Phrase -> Html Msg
+rotateVoice voice =
     div [ class "column small-1" ]
-        [ a [ class "expanded hollow warning button", onClick Rotate ] [ text "⮞" ]
+        [ a [ class "expanded hollow warning button", onClick (Rotate voice) ] [ text "⮞" ]
         ]
 
 
