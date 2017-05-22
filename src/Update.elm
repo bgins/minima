@@ -7,6 +7,8 @@ import Ports exposing (..)
 
 type Msg
     = Tick Time
+    | Play
+    | Pause
     | Rotate Phrase
     | Read Phrase
 
@@ -19,6 +21,12 @@ update msg model =
                 | clock = increment model.clock
             }
                 ! [ Cmd.batch (playNotes model.score model.clock) ]
+
+        Play ->
+            { model | clock = 1 } ! []
+
+        Pause ->
+            { model | clock = 0 } ! []
 
         Rotate voice ->
             case voice.id of
@@ -60,6 +68,9 @@ update msg model =
 increment : Int -> Int
 increment clock =
     case clock of
+        0 ->
+            0
+
         4 ->
             1
 

@@ -18,6 +18,14 @@ view model =
         , showPatttern model.fifth
         , showPatttern model.third
         , showPatttern model.root
+        , div [ class "row align-center" ]
+            [ div [ class "column small-2" ]
+                [ a [ class "expanded hollow button", onClick Pause ] [ text "Pause" ]
+                ]
+            , div [ class "column small-2" ]
+                [ a [ class "expanded hollow button", onClick Play ] [ text "Play" ]
+                ]
+            ]
         , div [ class "row" ]
             [ div [ class "columns" ]
                 [ h3 [] [ text (showScore model.score) ] ]
@@ -123,7 +131,6 @@ showPatttern voice =
                 , rest
                 , rotateVoice voice
                 ]
-
 
 
 whole : Html Msg

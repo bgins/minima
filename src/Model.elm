@@ -27,7 +27,7 @@ model =
     , fifth = Phrase "fifth" 660 RestQuartRestQuart
     , octave = Phrase "octave" 880 QuartRestQuartRest
     , ticks = 4
-    , clock = 1
+    , clock = 0
     }
 
 
