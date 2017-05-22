@@ -12,25 +12,12 @@ type alias Model =
     }
 
 
-
--- model =
---     { score =
---         [ Note 440 4 1
---         , Note 660 4 3
---         , Note 880 0.5 1
---         , Note 1320 0.5 2
---         , Note 1760 0.5 3
---         , Note 1320 0.5 4
---         ]
---     , voice = Phrase 440 HalfDotQuart
---     , ticks = 4
---     , clock = 1
---     }
-
-
 model =
     { score =
         [ Note 440 4 1
+        , Note 386.31 4 1
+        , Note 660 4 1
+        , Note 880 4 1
         ]
     , root = Phrase "root" 440 Whole
     , third = Phrase "third" 386.31 Whole

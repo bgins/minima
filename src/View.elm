@@ -15,6 +15,9 @@ view model =
                 [ h1 [] [ text "mimina" ] ]
             ]
         , showPatttern model.root
+        , showPatttern model.third
+        , showPatttern model.fifth
+        , showPatttern model.octave
         , div [ class "row" ]
             [ div [ class "columns" ]
                 [ h3 [] [ text (showScore model.score) ] ]
