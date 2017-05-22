@@ -14,10 +14,10 @@ view model =
             [ div [ class "columns" ]
                 [ h1 [] [ text "mimina" ] ]
             ]
-        , showPatttern model.root
-        , showPatttern model.third
-        , showPatttern model.fifth
         , showPatttern model.octave
+        , showPatttern model.fifth
+        , showPatttern model.third
+        , showPatttern model.root
         , div [ class "row" ]
             [ div [ class "columns" ]
                 [ h3 [] [ text (showScore model.score) ] ]
@@ -38,9 +38,79 @@ showPatttern voice =
                 , rotateVoice voice
                 ]
 
-        Model.HalfDotQuart ->
+        Model.HalfHalf ->
             div [ class "row align-center" ]
-                [ halfDot
+                [ half
+                , half
+                , rotateVoice voice
+                ]
+
+        Model.HalfRest ->
+            div [ class "row align-center" ]
+                [ half
+                , rest
+                , rest
+                , rotateVoice voice
+                ]
+
+        Model.RestHalf ->
+            div [ class "row align-center" ]
+                [ rest
+                , rest
+                , half
+                , rotateVoice voice
+                ]
+
+        Model.QuartRestQuartRest ->
+            div [ class "row align-center" ]
+                [ quarter
+                , rest
+                , quarter
+                , rest
+                , rotateVoice voice
+                ]
+
+        Model.RestQuartRestQuart ->
+            div [ class "row align-center" ]
+                [ rest
+                , quarter
+                , rest
+                , quarter
+                , rotateVoice voice
+                ]
+
+        Model.QuartRestRestRest ->
+            div [ class "row align-center" ]
+                [ quarter
+                , rest
+                , rest
+                , rest
+                , rotateVoice voice
+                ]
+
+        Model.RestQuartRestRest ->
+            div [ class "row align-center" ]
+                [ rest
+                , quarter
+                , rest
+                , rest
+                , rotateVoice voice
+                ]
+
+        Model.RestRestQuartRest ->
+            div [ class "row align-center" ]
+                [ rest
+                , rest
+                , quarter
+                , rest
+                , rotateVoice voice
+                ]
+
+        Model.RestRestRestQuart ->
+            div [ class "row align-center" ]
+                [ rest
+                , rest
+                , rest
                 , quarter
                 , rotateVoice voice
                 ]

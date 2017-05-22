@@ -80,9 +80,43 @@ read voice score =
             filterFrequency voice score
                 |> (++) [ Note (.frequency voice) 4 1 ]
 
-        HalfDotQuart ->
+        HalfHalf ->
             filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 3 1 ]
+                |> (++) [ Note (.frequency voice) 2 1 ]
+                |> (++) [ Note (.frequency voice) 2 3 ]
+
+        HalfRest ->
+            filterFrequency voice score
+                |> (++) [ Note (.frequency voice) 2 1 ]
+
+        RestHalf ->
+            filterFrequency voice score
+                |> (++) [ Note (.frequency voice) 2 3 ]
+
+        QuartRestQuartRest ->
+            filterFrequency voice score
+                |> (++) [ Note (.frequency voice) 1 1 ]
+                |> (++) [ Note (.frequency voice) 1 3 ]
+
+        RestQuartRestQuart ->
+            filterFrequency voice score
+                |> (++) [ Note (.frequency voice) 1 2 ]
+                |> (++) [ Note (.frequency voice) 1 4 ]
+
+        QuartRestRestRest ->
+            filterFrequency voice score
+                |> (++) [ Note (.frequency voice) 1 1 ]
+
+        RestQuartRestRest ->
+            filterFrequency voice score
+                |> (++) [ Note (.frequency voice) 1 2 ]
+
+        RestRestQuartRest ->
+            filterFrequency voice score
+                |> (++) [ Note (.frequency voice) 1 3 ]
+
+        RestRestRestQuart ->
+            filterFrequency voice score
                 |> (++) [ Note (.frequency voice) 1 4 ]
 
 
@@ -95,7 +129,31 @@ rotate : Phrase -> Phrase
 rotate voice =
     case voice.pattern of
         Whole ->
-            { voice | pattern = HalfDotQuart }
+            { voice | pattern = HalfHalf }
 
-        HalfDotQuart ->
+        HalfHalf ->
+            { voice | pattern = HalfRest }
+
+        HalfRest ->
+            { voice | pattern = RestHalf }
+
+        RestHalf ->
+            { voice | pattern = QuartRestQuartRest }
+
+        QuartRestQuartRest ->
+            { voice | pattern = RestQuartRestQuart }
+
+        RestQuartRestQuart ->
+            { voice | pattern = QuartRestRestRest }
+
+        QuartRestRestRest ->
+            { voice | pattern = RestQuartRestRest }
+
+        RestQuartRestRest ->
+            { voice | pattern = RestRestQuartRest }
+
+        RestRestQuartRest ->
+            { voice | pattern = RestRestRestQuart }
+
+        RestRestRestQuart ->
             { voice | pattern = Whole }
