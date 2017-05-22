@@ -119,6 +119,9 @@ read voice score =
             filterFrequency voice score
                 |> (++) [ Note (.frequency voice) 1 4 ]
 
+        Rest ->
+            filterFrequency voice score
+
 
 filterFrequency : Phrase -> Score -> Score
 filterFrequency phrase score =
@@ -156,4 +159,7 @@ rotate voice =
             { voice | pattern = RestRestRestQuart }
 
         RestRestRestQuart ->
+            { voice | pattern = Rest }
+
+        Rest ->
             { voice | pattern = Whole }

@@ -60,4 +60,5 @@ type Pattern
     | RestQuartRestRest
     | RestRestQuartRest
     | RestRestRestQuart
+    | Rest
 

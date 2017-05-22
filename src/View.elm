@@ -115,6 +115,16 @@ showPatttern voice =
                 , rotateVoice voice
                 ]
 
+        Model.Rest ->
+            div [ class "row align-center" ]
+                [ rest
+                , rest
+                , rest
+                , rest
+                , rotateVoice voice
+                ]
+
+
 
 whole : Html Msg
 whole =
