@@ -32,11 +32,11 @@ title =
 controls : Html Msg
 controls =
     div [ class "row align-center" ]
-        [ div [ class "column small-2" ]
-            [ a [ class "expanded hollow button", onClick Pause ] [ text "Pause" ]
+        [ div [ class "column small-1" ]
+            [ a [ class "expanded hollow button fa fa-pause", onClick Pause ] []
             ]
-        , div [ class "column small-2" ]
-            [ a [ class "expanded hollow button", onClick Play ] [ text "Play" ]
+        , div [ class "column small-1" ]
+            [ a [ class "expanded hollow button fa fa-play", onClick Play ] []
             ]
         ]
 
@@ -173,7 +173,7 @@ rest =
 rotateVoice : Phrase -> Html Msg
 rotateVoice voice =
     div [ class "column small-1" ]
-        [ a [ class "expanded hollow warning button", onClick (Rotate voice) ] [ text "⮞" ]
+        [ a [ class "expanded hollow warning button fa fa-chevron-right", onClick (Rotate voice) ] []
         ]
 
 
