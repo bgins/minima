@@ -10,29 +10,33 @@ import Update exposing (..)
 view : Model -> Html Msg
 view model =
     div []
-        [ div [ class "row" ]
-            [ div [ class "columns" ]
-                [ h1 [] [ text "mimina" ] ]
-            ]
+        [ title
         , showPatttern model.octave
         , showPatttern model.fifth
         , showPatttern model.third
         , showPatttern model.root
-        , div [ class "row align-center" ]
-            [ div [ class "column small-2" ]
-                [ a [ class "expanded hollow button", onClick Pause ] [ text "Pause" ]
-                ]
-            , div [ class "column small-2" ]
-                [ a [ class "expanded hollow button", onClick Play ] [ text "Play" ]
-                ]
+        , controls
+        , debugScore model.score
+        , debugClock model.clock
+        ]
+
+
+title : Html Msg
+title =
+    div [ class "row" ]
+        [ div [ class "columns" ]
+            [ h1 [] [ text "minima" ] ]
+        ]
+
+
+controls : Html Msg
+controls =
+    div [ class "row align-center" ]
+        [ div [ class "column small-2" ]
+            [ a [ class "expanded hollow button", onClick Pause ] [ text "Pause" ]
             ]
-        , div [ class "row" ]
-            [ div [ class "columns" ]
-                [ h3 [] [ text (showScore model.score) ] ]
-            ]
-        , div [ class "row" ]
-            [ div [ class "columns" ]
-                [ h3 [] [ text (showClock model.clock) ] ]
+        , div [ class "column small-2" ]
+            [ a [ class "expanded hollow button", onClick Play ] [ text "Play" ]
             ]
         ]
 
@@ -174,11 +178,23 @@ rotateVoice voice =
 
 
 
--- showPhrase : Phrase -> String
--- showPhrase phrase =
---     List.map .frequency phrase
---         |> List.map toString
---         |> String.join ", "
+-- DEBUG
+
+
+debugScore : Score -> Html Msg
+debugScore score =
+    div [ class "row" ]
+        [ div [ class "columns" ]
+            [ h3 [] [ text (showScore score) ] ]
+        ]
+
+
+debugClock : Int -> Html Msg
+debugClock clock =
+    div [ class "row" ]
+        [ div [ class "columns" ]
+            [ h3 [] [ text (showClock clock) ] ]
+        ]
 
 
 showScore : Score -> String
