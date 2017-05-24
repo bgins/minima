@@ -3,10 +3,10 @@ module Model exposing (..)
 
 type alias Model =
     { score : Score
-    , root : Phrase
-    , third : Phrase
-    , fifth : Phrase
-    , octave : Phrase
+    , root : Voice
+    , third : Voice
+    , fifth : Voice
+    , octave : Voice
     , ticks : Int
     , clock : Int
     }
@@ -22,10 +22,10 @@ model =
         , Note 880 1 1
         , Note 880 1 3
         ]
-    , root = Phrase "root" 440 Whole
-    , third = Phrase "third" 386.31 HalfHalf
-    , fifth = Phrase "fifth" 660 RestQuartRestQuart
-    , octave = Phrase "octave" 880 QuartRestQuartRest
+    , root = Voice "root" 440 [ Play 4 ]
+    , third = Voice "third" 386.31 [ Play 2, Play 2 ]
+    , fifth = Voice "fifth" 660 [ Rest 1, Play 1, Rest 1, Play 1 ]
+    , octave = Voice "octave" 880 [ Play 1, Rest 1, Play 1, Rest 1 ]
     , ticks = 4
     , clock = 0
     }
@@ -35,10 +35,18 @@ type alias Score =
     List Note
 
 
-type alias Phrase =
+
+-- type alias Voice =
+--     { id : String
+--     , frequency : Float
+--     , pattern : Pattern
+--     }
+
+
+type alias Voice =
     { id : String
     , frequency : Float
-    , pattern : Pattern
+    , pattern : List Action
     }
 
 
@@ -49,16 +57,38 @@ type alias Note =
     }
 
 
-type Pattern
-    = Whole
-    | HalfHalf
-    | HalfRest
-    | RestHalf
-    | QuartRestQuartRest
-    | RestQuartRestQuart
-    | QuartRestRestRest
-    | RestQuartRestRest
-    | RestRestQuartRest
-    | RestRestRestQuart
-    | Rest
+type Action
+    = Play Int
+    | Rest Int
 
+type alias Pattern =
+    List Action
+
+patterns : List Pattern
+patterns =
+    [ [ Play 4 ]
+    , [ Play 2, Play 2 ]
+    , [ Play 2, Rest 2 ]
+    , [ Rest 2, Play 2 ]
+    , [ Play 1, Rest 1, Play 1, Rest 1 ]
+    , [ Rest 1, Play 1, Rest 1, Play 1 ]
+    , [ Play 1, Rest 1, Rest 1, Rest 1 ]
+    , [ Rest 1, Play 1, Rest 1, Rest 1 ]
+    , [ Rest 1, Rest 1, Play 1, Rest 1 ]
+    , [ Rest 1, Rest 1, Rest 1, Play 1 ]
+    ]
+
+
+
+-- type Pattern
+--     = Whole
+--     | HalfHalf
+--     | HalfRest
+--     | RestHalf
+--     | QuartRestQuartRest
+--     | RestQuartRestQuart
+--     | QuartRestRestRest
+--     | RestQuartRestRest
+--     | RestRestQuartRest
+--     | RestRestRestQuart
+--     | Rest

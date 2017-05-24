@@ -3,7 +3,7 @@ module View exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Model exposing (Model, Phrase, Score)
+import Model exposing (Model, Voice, Score)
 import Update exposing (..)
 
 
@@ -11,10 +11,10 @@ view : Model -> Html Msg
 view model =
     div []
         [ title
-        , showPatttern model.octave
-        , showPatttern model.fifth
-        , showPatttern model.third
-        , showPatttern model.root
+        , showPattern model.octave
+        -- , showPattern model.fifth.pattern
+        -- , showPattern model.third.pattern
+        -- , showPattern model.root.pattern
         , controls
         , debugScore model.score
         , debugClock model.clock
@@ -41,100 +41,49 @@ controls =
         ]
 
 
-showPatttern : Phrase -> Html Msg
-showPatttern voice =
-    case voice.pattern of
-        Model.Whole ->
-            div [ class "row align-center" ]
-                [ whole
-                , rotateVoice voice
-                ]
 
-        Model.HalfHalf ->
-            div [ class "row align-center" ]
-                [ half
-                , half
-                , rotateVoice voice
-                ]
+showPattern : Model.Voice -> Html Msg
+showPattern voice =
+    case .pattern voice of
+        [] ->
+            div [ class "row align-center" ] []
 
-        Model.HalfRest ->
+        ps ->
             div [ class "row align-center" ]
-                [ half
-                , rest
-                , rest
-                , rotateVoice voice
-                ]
+                -- (List.map (\a -> renderAction a) ps)
+                (List.map (\a -> renderAction a) ps) ++ (rotateVoice voice)
 
-        Model.RestHalf ->
-            div [ class "row align-center" ]
-                [ rest
-                , rest
-                , half
-                , rotateVoice voice
-                ]
 
-        Model.QuartRestQuartRest ->
-            div [ class "row align-center" ]
-                [ quarter
-                , rest
-                , quarter
-                , rest
-                , rotateVoice voice
-                ]
+renderAction : Model.Action -> Html Msg
+renderAction action =
+    case action of
+        Model.Play duration ->
+            case duration of
+                4 ->
+                    whole
 
-        Model.RestQuartRestQuart ->
-            div [ class "row align-center" ]
-                [ rest
-                , quarter
-                , rest
-                , quarter
-                , rotateVoice voice
-                ]
+                2 ->
+                    half
 
-        Model.QuartRestRestRest ->
-            div [ class "row align-center" ]
-                [ quarter
-                , rest
-                , rest
-                , rest
-                , rotateVoice voice
-                ]
+                1 ->
+                    quarter
 
-        Model.RestQuartRestRest ->
-            div [ class "row align-center" ]
-                [ rest
-                , quarter
-                , rest
-                , rest
-                , rotateVoice voice
-                ]
+                _ ->
+                    div [] []
 
-        Model.RestRestQuartRest ->
-            div [ class "row align-center" ]
-                [ rest
-                , rest
-                , quarter
-                , rest
-                , rotateVoice voice
-                ]
+        Model.Rest duration ->
+            case duration of
+                4 ->
+                    wholeRest
 
-        Model.RestRestRestQuart ->
-            div [ class "row align-center" ]
-                [ rest
-                , rest
-                , rest
-                , quarter
-                , rotateVoice voice
-                ]
+                2 ->
+                    halfRest
 
-        Model.Rest ->
-            div [ class "row align-center" ]
-                [ rest
-                , rest
-                , rest
-                , rest
-                , rotateVoice voice
-                ]
+                1 ->
+                    quarterRest
+
+                _ ->
+                    div [] []
 
 
 whole : Html Msg
@@ -165,12 +114,28 @@ quarter =
         ]
 
 
-rest : Html Msg
-rest =
+
+-- rest : Html Msg
+-- rest =
+--     div [ class "column small-1" ] [ text "\x2002" ]
+
+
+wholeRest : Html Msg
+wholeRest =
+    div [ class "column small-4" ] [ text "\x2002" ]
+
+
+halfRest : Html Msg
+halfRest =
+    div [ class "column small-2" ] [ text "\x2002" ]
+
+
+quarterRest : Html Msg
+quarterRest =
     div [ class "column small-1" ] [ text "\x2002" ]
 
 
-rotateVoice : Phrase -> Html Msg
+rotateVoice : Voice -> Html Msg
 rotateVoice voice =
     div [ class "column small-1" ]
         [ a [ class "expanded hollow warning button fa fa-chevron-right", onClick (Rotate voice) ] []
@@ -216,3 +181,159 @@ showClock clock =
 
         _ ->
             toString (clock - 1)
+
+
+
+-- showPatttern : Voice -> Html Msg
+-- showPatttern voice =
+--     case voice.pattern of
+--         Model.Whole ->
+--             div [ class "row align-center" ]
+--                 [ whole
+--                 , rotateVoice voice
+--                 ]
+--         Model.HalfHalf ->
+--             div [ class "row align-center" ]
+--                 [ half
+--                 , half
+--                 , rotateVoice voice
+--                 ]
+--         Model.HalfRest ->
+--             div [ class "row align-center" ]
+--                 [ half
+--                 , rest
+--                 , rest
+--                 , rotateVoice voice
+--                 ]
+--         Model.RestHalf ->
+--             div [ class "row align-center" ]
+--                 [ rest
+--                 , rest
+--                 , half
+--                 , rotateVoice voice
+--                 ]
+--         Model.QuartRestQuartRest ->
+--             div [ class "row align-center" ]
+--                 [ quarter
+--                 , rest
+--                 , quarter
+--                 , rest
+--                 , rotateVoice voice
+--                 ]
+--         Model.RestQuartRestQuart ->
+--             div [ class "row align-center" ]
+--                 [ rest
+--                 , quarter
+--                 , rest
+--                 , quarter
+--                 , rotateVoice voice
+--                 ]
+--         Model.QuartRestRestRest ->
+--             div [ class "row align-center" ]
+--                 [ quarter
+--                 , rest
+--                 , rest
+--                 , rest
+--                 , rotateVoice voice
+--                 ]
+--         Model.RestQuartRestRest ->
+--             div [ class "row align-center" ]
+--                 [ rest
+--                 , quarter
+--                 , rest
+--                 , rest
+--                 , rotateVoice voice
+--                 ]
+--         Model.RestRestQuartRest ->
+--             div [ class "row align-center" ]
+--                 [ rest
+--                 , rest
+--                 , quarter
+--                 , rest
+--                 , rotateVoice voice
+--                 ]
+--         Model.RestRestRestQuart ->
+--             div [ class "row align-center" ]
+--                 [ rest
+--                 , rest
+--                 , rest
+--                 , quarter
+--                 , rotateVoice voice
+--                 ]
+--         Model.Rest ->
+--             div [ class "row align-center" ]
+--                 [ rest
+--                 , rest
+--                 , rest
+--                 , rest
+--                 , rotateVoice voice
+--                 ]
+
+
+
+-- showPattern : Model.Pattern -> Html Msg
+-- showPattern pattern =
+--     case List.head pattern of
+--         Nothing ->
+--             []
+--         Model.Play duration ->
+--             let
+--                 length =
+--                     "column small-" ++ toString (duration)
+--             in
+--                 [ div [ class length ]
+--                     [ a [ class "expanded button" ] [ text "\x2002" ] -- unicode space here
+--                     ] ,   showPattern (List.tail pattern) ]
+--         Model.Rest duration ->
+--             let
+--                 length =
+--                     "column small-" ++ toString (duration)
+--             in
+--                 div [ class length ] [ text "\x2002" ]
+--                     :: showPattern (List.tail pattern)
+-- showPattern : Model.Pattern -> Html Msg
+-- showPattern pattern =
+--     case pattern of
+--         _ ->
+--             []
+--         p :: ps ->
+--             case p of
+--                 Model.Play duration ->
+--                     let
+--                         length =
+--                             "column small-" ++ toString (duration)
+--                     in
+--                         div [ class length ]
+--                             [ a [ class "expanded button" ] [ text "\x2002" ] -- unicode space here
+--                             ]
+--                             :: showPattern ps
+--                 Model.Rest duration ->
+--                     let
+--                         length =
+--                             "column small-" ++ toString (duration)
+--                     in
+--                         div [ class length ] [ text "\x2002" ]
+--                             :: showPattern ps
+
+
+-- showPattern : Model.Pattern -> Html Msg
+-- showPattern pattern =
+--     case pattern of
+--         [] ->
+--             div [ class "row align-center" ] []
+
+--         ps ->
+--             div [ class "row align-center" ]
+--                 (List.map (\a -> renderAction a) ps)
+
+-- showPattern : Model.Voice -> Html Msg
+-- showPattern voice =
+--     case .pattern voice of
+--         [] ->
+--             div [ class "row align-center" ] []
+
+--         ps ->
+--             div [ class "row align-center" ]
+--                 -- List.concat [(List.map (\a -> renderAction a) ps) ++ [rotateVoice voice]]
+--                 -- List.concat ((List.map (\a -> renderAction a) ps) :: [[rotateVoice voice]])
+--                 (List.map (\a -> renderAction a) ps) ++ (rotateVoice voice)

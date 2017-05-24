@@ -9,8 +9,8 @@ type Msg
     = Tick Time
     | Play
     | Pause
-    | Rotate Phrase
-    | Read Phrase
+    | Rotate Voice
+    | Read Voice
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -84,93 +84,84 @@ playNotes score clock =
         |> List.map play
 
 
-read : Phrase -> Score -> Score
+
+-- TODO:
+
+
+read : Voice -> Score -> Score
 read voice score =
-    case .pattern (rotate voice) of
-        Whole ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 4 1 ]
-
-        HalfHalf ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 2 1 ]
-                |> (++) [ Note (.frequency voice) 2 3 ]
-
-        HalfRest ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 2 1 ]
-
-        RestHalf ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 2 3 ]
-
-        QuartRestQuartRest ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 1 1 ]
-                |> (++) [ Note (.frequency voice) 1 3 ]
-
-        RestQuartRestQuart ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 1 2 ]
-                |> (++) [ Note (.frequency voice) 1 4 ]
-
-        QuartRestRestRest ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 1 1 ]
-
-        RestQuartRestRest ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 1 2 ]
-
-        RestRestQuartRest ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 1 3 ]
-
-        RestRestRestQuart ->
-            filterFrequency voice score
-                |> (++) [ Note (.frequency voice) 1 4 ]
-
-        Rest ->
-            filterFrequency voice score
+    []
 
 
-filterFrequency : Phrase -> Score -> Score
-filterFrequency phrase score =
-    List.filter (\n -> .frequency n /= .frequency phrase) score
-
-
-rotate : Phrase -> Phrase
+rotate : Voice -> Voice
 rotate voice =
-    case voice.pattern of
-        Whole ->
-            { voice | pattern = HalfHalf }
+    { voice | pattern = [ Rest 2 ] }
 
-        HalfHalf ->
-            { voice | pattern = HalfRest }
 
-        HalfRest ->
-            { voice | pattern = RestHalf }
 
-        RestHalf ->
-            { voice | pattern = QuartRestQuartRest }
-
-        QuartRestQuartRest ->
-            { voice | pattern = RestQuartRestQuart }
-
-        RestQuartRestQuart ->
-            { voice | pattern = QuartRestRestRest }
-
-        QuartRestRestRest ->
-            { voice | pattern = RestQuartRestRest }
-
-        RestQuartRestRest ->
-            { voice | pattern = RestRestQuartRest }
-
-        RestRestQuartRest ->
-            { voice | pattern = RestRestRestQuart }
-
-        RestRestRestQuart ->
-            { voice | pattern = Rest }
-
-        Rest ->
-            { voice | pattern = Whole }
+-- read : Voice -> Score -> Score
+-- read voice score =
+--     case .pattern (rotate voice) of
+--         Whole ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 4 1 ]
+--         HalfHalf ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 2 1 ]
+--                 |> (++) [ Note (.frequency voice) 2 3 ]
+--         HalfRest ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 2 1 ]
+--         RestHalf ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 2 3 ]
+--         QuartRestQuartRest ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 1 1 ]
+--                 |> (++) [ Note (.frequency voice) 1 3 ]
+--         RestQuartRestQuart ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 1 2 ]
+--                 |> (++) [ Note (.frequency voice) 1 4 ]
+--         QuartRestRestRest ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 1 1 ]
+--         RestQuartRestRest ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 1 2 ]
+--         RestRestQuartRest ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 1 3 ]
+--         RestRestRestQuart ->
+--             filterFrequency voice score
+--                 |> (++) [ Note (.frequency voice) 1 4 ]
+--         Rest ->
+--             filterFrequency voice score
+-- filterFrequency : Voice -> Score -> Score
+-- filterFrequency phrase score =
+--     List.filter (\n -> .frequency n /= .frequency phrase) score
+-- rotate : Voice -> Voice
+-- rotate voice =
+--     case voice.pattern of
+--         Whole ->
+--             { voice | pattern = HalfHalf }
+--         HalfHalf ->
+--             { voice | pattern = HalfRest }
+--         HalfRest ->
+--             { voice | pattern = RestHalf }
+--         RestHalf ->
+--             { voice | pattern = QuartRestQuartRest }
+--         QuartRestQuartRest ->
+--             { voice | pattern = RestQuartRestQuart }
+--         RestQuartRestQuart ->
+--             { voice | pattern = QuartRestRestRest }
+--         QuartRestRestRest ->
+--             { voice | pattern = RestQuartRestRest }
+--         RestQuartRestRest ->
+--             { voice | pattern = RestRestQuartRest }
+--         RestRestQuartRest ->
+--             { voice | pattern = RestRestRestQuart }
+--         RestRestRestQuart ->
+--             { voice | pattern = Rest }
+--         Rest ->
+--             { voice | pattern = Whole }
