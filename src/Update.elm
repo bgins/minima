@@ -93,23 +93,18 @@ read voice score =
 
 readPattern : Int -> Voice -> Pattern -> Score -> Score
 readPattern count voice pattern score =
-    case count of
-        5 ->
+    case pattern of
+        [] ->
             []
 
-        _ ->
-            case pattern of
-                [] ->
-                    []
+        p :: ps ->
+            case p of
+                Model.Play n ->
+                    (Note (.frequency voice) n (n + count))
+                        :: readPattern (n + count) voice ps score
 
-                p :: ps ->
-                    case p of
-                        Model.Play n ->
-                            (Note (.frequency voice) n (n + count))
-                                :: readPattern (n + count) voice ps score
-
-                        Model.Rest n ->
-                            readPattern (n + count) voice ps score
+                Model.Rest n ->
+                    readPattern (n + count) voice ps score
 
 
 filterFrequency : Voice -> Score -> Score
