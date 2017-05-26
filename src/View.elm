@@ -11,10 +11,10 @@ view : Model -> Html Msg
 view model =
     div []
         [ title
-        , showPattern model.octave
-        , showPattern model.fifth
-        , showPattern model.third
-        , showPattern model.root
+        , showRow model.octave
+        , showRow model.fifth
+        , showRow model.third
+        , showRow model.root
         , controls
         , debugScore model.score
         , debugClock model.clock
@@ -41,8 +41,8 @@ controls =
         ]
 
 
-showPattern : Model.Voice -> Html Msg
-showPattern voice =
+showRow : Model.Voice -> Html Msg
+showRow voice =
     case .pattern voice of
         [] ->
             div [ class "row align-center" ] []
@@ -54,77 +54,19 @@ showPattern voice =
 
 renderAction : Model.Action -> Html Msg
 renderAction action =
-    case action of
-        Model.Play duration ->
-            case duration of
-                4 ->
-                    whole
+    let
+        width duration =
+            "column small-" ++ toString duration
+    in
+        case action of
+            Model.Play duration ->
+                div [ class (width duration) ]
+                    [ a [ class "expanded button" ] [ text "\x2002" ] -- unicode space here
+                    ]
 
-                2 ->
-                    half
-
-                1 ->
-                    quarter
-
-                _ ->
-                    div [] []
-
-        Model.Rest duration ->
-            case duration of
-                4 ->
-                    wholeRest
-
-                2 ->
-                    halfRest
-
-                1 ->
-                    quarterRest
-
-                _ ->
-                    div [] []
-
-
-whole : Html Msg
-whole =
-    div [ class "column small-4" ]
-        [ a [ class "expanded button" ] [ text "\x2002" ] -- unicode space here
-        ]
-
-
-halfDot : Html Msg
-halfDot =
-    div [ class "column small-3" ]
-        [ a [ class "expanded button" ] [ text "\x2002" ]
-        ]
-
-
-half : Html Msg
-half =
-    div [ class "column small-2" ]
-        [ a [ class "expanded button" ] [ text "\x2002" ]
-        ]
-
-
-quarter : Html Msg
-quarter =
-    div [ class "column small-1" ]
-        [ a [ class "expanded button" ] [ text "\x2002" ]
-        ]
-
-
-wholeRest : Html Msg
-wholeRest =
-    div [ class "column small-4" ] [ text "\x2002" ]
-
-
-halfRest : Html Msg
-halfRest =
-    div [ class "column small-2" ] [ text "\x2002" ]
-
-
-quarterRest : Html Msg
-quarterRest =
-    div [ class "column small-1" ] [ text "\x2002" ]
+            Model.Rest duration ->
+                div [ class (width duration) ]
+                    [ text "\x2002" ]
 
 
 rotateVoice : Voice -> Html Msg
@@ -159,10 +101,6 @@ showScore score =
     List.map .frequency score
         |> List.map toString
         |> String.join ", "
-
-
-
--- hack to show clock correctly
 
 
 showClock : Int -> String

@@ -19,7 +19,7 @@ update msg model =
     case msg of
         Tick time ->
             { model
-                | clock = increment model.clock
+                | clock = increment model.clock model.ticks
             }
                 ! [ Cmd.batch (playNotes model.score model.clock) ]
 
@@ -66,17 +66,15 @@ update msg model =
             { model | score = read voice model.score } ! []
 
 
-increment : Int -> Int
-increment clock =
+
+increment : Int -> Int -> Int
+increment clock ticks =
     case clock of
         0 ->
             0
 
-        4 ->
-            1
-
         _ ->
-            clock + 1
+            (clock % ticks) + 1
 
 
 playNotes : Score -> Int -> List (Cmd msg)
@@ -85,9 +83,13 @@ playNotes score clock =
         |> List.map play
 
 
+
+-- READ
+
+
 read : Voice -> Score -> Score
 read voice score =
-    (readPattern 0 voice (.pattern (rotate voice)) score)
+    (readPattern 1 voice (.pattern (rotate voice)) score)
         ++ (filterFrequency voice score)
 
 
@@ -100,7 +102,7 @@ readPattern count voice pattern score =
         p :: ps ->
             case p of
                 Model.Play n ->
-                    (Note (.frequency voice) n (n + count))
+                    (Note (.frequency voice) n count)
                         :: readPattern (n + count) voice ps score
 
                 Model.Rest n ->
@@ -110,6 +112,10 @@ readPattern count voice pattern score =
 filterFrequency : Voice -> Score -> Score
 filterFrequency voice score =
     List.filter (\n -> .frequency n /= .frequency voice) score
+
+
+
+-- ROTATE
 
 
 rotate : Voice -> Voice
