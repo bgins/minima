@@ -30,15 +30,12 @@ model =
     }
 
 
+
+-- SCORE
+
+
 type alias Score =
     List Note
-
-
-type alias Voice =
-    { id : String
-    , frequency : Float
-    , pattern : List Action
-    }
 
 
 type alias Note =
@@ -48,13 +45,24 @@ type alias Note =
     }
 
 
-type Action
-    = Play Int
-    | Rest Int
+
+-- VOICE
+
+
+type alias Voice =
+    { id : String
+    , frequency : Float
+    , pattern : Pattern
+    }
 
 
 type alias Pattern =
     List Action
+
+
+type Action
+    = Play Int
+    | Rest Int
 
 
 patterns : List Pattern
