@@ -30,30 +30,30 @@ update msg model =
 
         Rotate voice direction ->
             case voice.id of
-                "root" ->
+                "one" ->
                     { model
-                        | root = rotate voice direction
+                        | one = rotate voice direction
                         , score = read voice direction model.score
                     }
                         ! []
 
-                "third" ->
+                "two" ->
                     { model
-                        | third = rotate voice direction
+                        | two = rotate voice direction
                         , score = read voice direction model.score
                     }
                         ! []
 
-                "fifth" ->
+                "three" ->
                     { model
-                        | fifth = rotate voice direction
+                        | three = rotate voice direction
                         , score = read voice direction model.score
                     }
                         ! []
 
-                "octave" ->
+                "four" ->
                     { model
-                        | octave = rotate voice direction
+                        | four = rotate voice direction
                         , score = read voice direction model.score
                     }
                         ! []

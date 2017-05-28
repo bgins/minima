@@ -11,10 +11,10 @@ view : Model -> Html Msg
 view model =
     div []
         [ title
-        , showRow model.octave
-        , showRow model.fifth
-        , showRow model.third
-        , showRow model.root
+        , showRow model.four
+        , showRow model.three
+        , showRow model.two
+        , showRow model.one
         , instructions model.clock
         ]
 
