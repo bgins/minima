@@ -105,9 +105,9 @@ showScore score =
 
 showClock : Int -> String
 showClock clock =
-    case clock % 4 of
-        1 ->
+    case (clock < 2) of
+        True ->
             toString 4
 
-        _ ->
+        False ->
             toString (clock - 1)
