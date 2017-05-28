@@ -3,7 +3,7 @@ module View exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Model exposing (Model, Voice, Score)
+import Model exposing (Model, Voice, Score, Direction)
 import Update exposing (..)
 
 
@@ -49,7 +49,10 @@ showRow voice =
 
         ps ->
             div [ class "row align-center" ]
-                ((List.map (\a -> renderAction a) ps) ++ [ rotateVoice voice ])
+                ((rotateVoice voice Model.Left)
+                    :: (List.map (\a -> renderAction a) ps)
+                    ++ [ rotateVoice voice Model.Right ]
+                )
 
 
 renderAction : Model.Action -> Html Msg
@@ -69,10 +72,15 @@ renderAction action =
                     [ text "\x2002" ]
 
 
-rotateVoice : Voice -> Html Msg
-rotateVoice voice =
+rotateVoice : Voice -> Direction -> Html Msg
+rotateVoice voice direction =
     div [ class "column small-1" ]
-        [ a [ class "expanded hollow warning button fa fa-chevron-right", onClick (Rotate voice) ] []
+        [ case direction of
+            Model.Left ->
+                a [ class "expanded hollow secondary button fa fa-chevron-left", onClick (Rotate voice direction) ] []
+
+            Model.Right ->
+                a [ class "expanded hollow secondary button fa fa-chevron-right", onClick (Rotate voice direction) ] []
         ]
 
 

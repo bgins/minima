@@ -10,8 +10,7 @@ type Msg
     = Tick Time
     | Play
     | Pause
-    | Rotate Voice
-    | Read Voice
+    | Rotate Voice Direction
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -29,42 +28,38 @@ update msg model =
         Pause ->
             { model | clock = 0 } ! []
 
-        Rotate voice ->
+        Rotate voice direction ->
             case voice.id of
                 "root" ->
                     { model
-                        | root = rotate voice
-                        , score = read voice model.score
+                        | root = rotate voice direction
+                        , score = read voice direction model.score
                     }
                         ! []
 
                 "third" ->
                     { model
-                        | third = rotate voice
-                        , score = read voice model.score
+                        | third = rotate voice direction
+                        , score = read voice direction model.score
                     }
                         ! []
 
                 "fifth" ->
                     { model
-                        | fifth = rotate voice
-                        , score = read voice model.score
+                        | fifth = rotate voice direction
+                        , score = read voice direction model.score
                     }
                         ! []
 
                 "octave" ->
                     { model
-                        | octave = rotate voice
-                        , score = read voice model.score
+                        | octave = rotate voice direction
+                        , score = read voice direction model.score
                     }
                         ! []
 
                 _ ->
-                    { model | octave = rotate voice } ! []
-
-        Read voice ->
-            { model | score = read voice model.score } ! []
-
+                    model ! []
 
 
 increment : Int -> Int -> Int
@@ -87,9 +82,9 @@ playNotes score clock =
 -- READ
 
 
-read : Voice -> Score -> Score
-read voice score =
-    (readPattern 1 voice (.pattern (rotate voice)) score)
+read : Voice -> Direction -> Score -> Score
+read voice direction score =
+    (readPattern 1 voice (.pattern (rotate voice direction)) score)
         ++ (filterFrequency voice score)
 
 
@@ -118,11 +113,16 @@ filterFrequency voice score =
 -- ROTATE
 
 
-rotate : Voice -> Voice
-rotate voice =
+rotate : Voice -> Direction -> Voice
+rotate voice direction =
     case elemIndex voice.pattern patterns of
         Just n ->
-            { voice | pattern = getPatternAt ((n + 1) % List.length patterns) }
+            case direction of
+                Model.Left ->
+                    { voice | pattern = getPatternAt ((n - 1) % List.length patterns) }
+
+                Model.Right ->
+                    { voice | pattern = getPatternAt ((n + 1) % List.length patterns) }
 
         Nothing ->
             { voice | pattern = voice.pattern }

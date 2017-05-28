@@ -65,6 +65,11 @@ type Action
     | Rest Int
 
 
+type Direction
+    = Left
+    | Right
+
+
 patterns : List Pattern
 patterns =
     [ [ Play 4 ]
