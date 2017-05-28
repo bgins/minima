@@ -3,15 +3,28 @@ body {
 }
 
 h1 {
-  font-family: Cinzel;
-  font-size: 4rem;
+  font-family: 'Cinzel', serif;
+  font-size: 4.5rem;
   text-align: center;
   margin: 1rem 0 2rem 0;
 }
 
-h3 {
-  font-family: Cinzel;
-  font-size: 2.5rem;
+p {
+  font-family: 'Quattrocento Sans', sans-serif;
+  font-size: 1.5rem;
   text-align: center;
 }
 
+a.control {
+  margin: 0 0.5em 0 0.5em;
+}
+
+a.secondary {
+  color: rgb(118, 118, 118);
+}
+
+span.clock {
+  display: inline-block;
+  width: 0.8em;
+  font-size: 1.7rem;
+}
