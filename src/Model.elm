@@ -22,7 +22,7 @@ model =
         , Note 880 1 1
         , Note 880 1 3
         ]
-    , one = Voice "one" 386.31 [ Play 2, Play 2 ] -- 7/8
+    , one = Voice "one" 385 [ Play 2, Play 2 ] -- 7/8
     , two = Voice "two" 440 [ Play 4 ] -- 1/1
     , three = Voice "three" 660 [ Rest 1, Play 1, Rest 1, Play 1 ] -- 3/2
     , four = Voice "four" 880 [ Play 1, Rest 1, Play 1, Rest 1 ] -- 2/1
