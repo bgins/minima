@@ -15,6 +15,7 @@ view model =
         , showRow model.three
         , showRow model.two
         , showRow model.one
+        , showCounter model.ticks
         , instructions model.clock
         ]
 
@@ -24,40 +25,6 @@ title =
     div [ class "row" ]
         [ div [ class "columns" ]
             [ h1 [] [ text "minima" ] ]
-        ]
-
-
-controls : Html Msg
-controls =
-    div [ class "row align-center" ]
-        [ div [ class "column small-1" ]
-            [ a [ class "expanded hollow button fa fa-pause", onClick Pause ] []
-            ]
-        , div [ class "column small-1" ]
-            [ a [ class "expanded hollow button fa fa-play", onClick Play ] []
-            ]
-        ]
-
-
-instructions : Int -> Html Msg
-instructions clock =
-    div [ class "row align-center" ]
-        [ div [ class "column small-6" ]
-            [ p []
-                [ text "Minima is a playground for experimenting with minimalist musical patterns. Press "
-                , a [ class "control fa fa-play", onClick Play ] []
-                , text "to start the music and"
-                , a [ class "control fa fa-pause", onClick Pause ] []
-                , text "to stop it."
-                , text " Select patterns with the "
-                , a [ class "control secondary fa fa-chevron-left" ] []
-                , text "and  "
-                , a [ class "control secondary fa fa-chevron-right" ] []
-                , text "buttons. Minima has four beats, and the current beat is "
-                , span [ class "clock" ] [ text (showClock clock) ]
-                , text ". Have fun and I hope you enjoy!"
-                ]
-            ]
         ]
 
 
@@ -101,6 +68,45 @@ rotateVoice voice direction =
 
             Model.Right ->
                 a [ class "expanded hollow secondary button fa fa-chevron-right", onClick (Rotate voice direction) ] []
+        ]
+
+
+showCounter : Int -> Html Msg
+showCounter last =
+    div [ class "counter row align-center" ]
+        (counter 1 last)
+
+
+counter : Int -> Int -> List (Html Msg)
+counter current last =
+    case current > last of
+        True ->
+            []
+
+        False ->
+            [ div [ class "column small-1" ] [ text (toString current) ] ]
+                ++ counter (current + 1) last
+
+
+instructions : Int -> Html Msg
+instructions clock =
+    div [ class "row align-center" ]
+        [ div [ class "column small-6" ]
+            [ p []
+                [ text "Minima is a playground for experimenting with minimalist musical patterns. Press "
+                , a [ class "control fa fa-play", onClick Play ] []
+                , text "to start the music and"
+                , a [ class "control fa fa-pause", onClick Pause ] []
+                , text "to stop it."
+                , text " Select patterns with the "
+                , a [ class "control secondary fa fa-chevron-left" ] []
+                , text "and  "
+                , a [ class "control secondary fa fa-chevron-right" ] []
+                , text "buttons. Minima has four beats, and the current beat is "
+                , span [ class "clock" ] [ text (showClock clock) ]
+                , text ". Have fun and I hope you enjoy!"
+                ]
+            ]
         ]
 
 

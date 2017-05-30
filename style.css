@@ -2,11 +2,9 @@ body {
   background: #f2eee2;
 }
 
-h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 4.5rem;
+div.counter {
   text-align: center;
-  margin: 1rem 0 2rem 0;
+  padding-bottom: 1em;
 }
 
 p {
@@ -15,12 +13,19 @@ p {
   text-align: center;
 }
 
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 4.5rem;
+  text-align: center;
+  margin: 1rem 0 2rem 0;
+}
+
 a.control {
   margin: 0 0.5em 0 0.5em;
 }
 
 a.secondary {
-  color: rgb(118, 118, 118);
+  color: #767676;
 }
 
 span.clock {

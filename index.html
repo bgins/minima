@@ -15,7 +15,6 @@
         <script type="text/javascript" src="main.js"></script>
         <script>
          "use strict"
-         /* var app = Elm.Instrument.fullscreen();*/
          var app = Elm.Main.fullscreen();
 
          var context = new (window.AudioContext || window.webkitAudioContext)();
@@ -32,7 +31,6 @@
 
 
          function playNote (frequency, duration) {
-           // console.log(frequency + ", " + duration);
 
            // intstantiate and initialize nodes
            var osc = context.createOscillator();
@@ -60,7 +58,6 @@
          app.ports.play.subscribe(function (args) {
            var frequency = args.frequency;
            var duration = args.duration;
-           // console.log(args);
            playNote(frequency, duration);
          });
 
