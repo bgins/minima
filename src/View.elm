@@ -36,8 +36,8 @@ showRow voice =
 
         ps ->
             div [ class "row align-center" ]
-                ((rotateVoice voice Model.Left)
-                    :: (List.map (\a -> renderAction a) ps)
+                (rotateVoice voice Model.Left
+                    :: List.map renderAction ps
                     ++ [ rotateVoice voice Model.Right ]
                 )
 
