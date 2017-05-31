@@ -34,10 +34,10 @@ showRow voice =
         [] ->
             div [ class "row align-center" ] []
 
-        ps ->
+        acts ->
             div [ class "row align-center" ]
                 (rotateVoice voice Model.Left
-                    :: List.map renderAction ps
+                    :: List.map renderAction acts
                     ++ [ rotateVoice voice Model.Right ]
                 )
 
