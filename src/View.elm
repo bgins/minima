@@ -45,19 +45,17 @@ showRow voice =
 renderAction : Model.Action -> Html Msg
 renderAction action =
     let
-        width duration =
-            "column small-" ++ toString duration
+        block duration text =
+            div [ class ("column small-" ++ toString duration) ] text
+        space =
+            [ text "\x2002" ] -- unicode space
     in
         case action of
             Model.Play duration ->
-                div [ class (width duration) ]
-                    [ a [ class "expanded button" ] [ text "\x2002" ] -- unicode space here
-                    ]
+                block duration [ a [ class "expanded button" ] space ]
 
             Model.Rest duration ->
-                div [ class (width duration) ]
-                    [ text "\x2002" ]
-
+                block duration space
 
 rotateVoice : Voice -> Direction -> Html Msg
 rotateVoice voice direction =
