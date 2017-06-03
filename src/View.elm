@@ -88,29 +88,6 @@ counter current last =
                 ++ counter (current + 1) last
 
 
-
--- instructions : Int -> Html Msg
--- instructions clock =
---     div [ class "row align-center" ]
---         [ div [ class "column small-6" ]
---             [ p []
---                 [ text "Minima is a playground for experimenting with minimalist musical patterns. Press "
---                 , a [ class "control fa fa-play", onClick Play ] []
---                 , text "to start the music and"
---                 , a [ class "control fa fa-pause", onClick Pause ] []
---                 , text "to stop it."
---                 , text " Select patterns with the "
---                 , a [ class "control secondary fa fa-chevron-left" ] []
---                 , text "and  "
---                 , a [ class "control secondary fa fa-chevron-right" ] []
---                 , text "buttons. Minima has four beats, and the current beat is "
---                 , span [ class "clock" ] [ text (showClock clock) ]
---                 , text ". Have fun and I hope you enjoy!"
---                 ]
---             ]
---         ]
-
-
 instructions : Int -> Html Msg
 instructions clock =
     div [ class "row align-center" ]
