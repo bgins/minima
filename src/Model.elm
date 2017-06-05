@@ -3,12 +3,12 @@ module Model exposing (..)
 
 type alias Model =
     { score : Score
+    , ticks : Int
+    , clock : Int
     , one : Voice
     , two : Voice
     , three : Voice
     , four : Voice
-    , ticks : Int
-    , clock : Int
     }
 
 
