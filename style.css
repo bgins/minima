@@ -9,7 +9,7 @@ div.counter {
 
 p {
   font-family: 'Quattrocento Sans', sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   text-align: center;
 }
 
@@ -31,5 +31,5 @@ a.secondary {
 span.clock {
   display: inline-block;
   width: 0.8em;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
 }

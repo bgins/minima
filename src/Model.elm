@@ -3,12 +3,12 @@ module Model exposing (..)
 
 type alias Model =
     { score : Score
+    , ticks : Int
+    , clock : Int
     , one : Voice
     , two : Voice
     , three : Voice
     , four : Voice
-    , ticks : Int
-    , clock : Int
     }
 
 
@@ -79,10 +79,10 @@ patterns =
     , [ Rest 2, Play 2 ]
     , [ Play 1, Rest 1, Play 1, Rest 1 ]
     , [ Rest 1, Play 1, Rest 1, Play 1 ]
-    , [ Play 1, Rest 1, Rest 1, Rest 1 ]
-    , [ Rest 1, Play 1, Rest 1, Rest 1 ]
-    , [ Rest 1, Rest 1, Play 1, Rest 1 ]
-    , [ Rest 1, Rest 1, Rest 1, Play 1 ]
+    , [ Play 1, Rest 3 ]
+    , [ Rest 1, Play 1, Rest 2 ]
+    , [ Rest 2, Play 1, Rest 1 ]
+    , [ Rest 3, Play 1 ]
     , [ Rest 4 ]
     ]
 

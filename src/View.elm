@@ -34,10 +34,10 @@ showRow voice =
         [] ->
             div [ class "row align-center" ] []
 
-        ps ->
+        acts ->
             div [ class "row align-center" ]
                 (rotateVoice voice Model.Left
-                    :: List.map renderAction ps
+                    :: List.map renderAction acts
                     ++ [ rotateVoice voice Model.Right ]
                 )
 
@@ -91,19 +91,27 @@ instructions clock =
     div [ class "row align-center" ]
         [ div [ class "column small-6" ]
             [ p []
-                [ text "Minima is a playground for experimenting with minimalist musical patterns. Press "
+                [ text "Minima is a playground for experimenting with minimalist musical patterns." ]
+            , p []
+                [ text "Press "
                 , a [ class "control fa fa-play", onClick Play ] []
                 , text "to start the music and"
                 , a [ class "control fa fa-pause", onClick Pause ] []
                 , text "to stop it."
-                , text " Select patterns with the "
+                ]
+            , p []
+                [ text " Select patterns with the "
                 , a [ class "control secondary fa fa-chevron-left" ] []
                 , text "and  "
                 , a [ class "control secondary fa fa-chevron-right" ] []
-                , text "buttons. Minima has four beats, and the current beat is "
-                , span [ class "clock" ] [ text (showClock clock) ]
-                , text ". Have fun and I hope you enjoy!"
+                , text "buttons."
                 ]
+            , p []
+                [ text "Minima has four beats, and the current beat is "
+                , span [ class "clock" ] [ text (showClock clock ++ ".") ]
+                ]
+            , p []
+                [ text "Have fun and I hope you enjoy!" ]
             ]
         ]
 
