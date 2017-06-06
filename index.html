@@ -56,9 +56,7 @@
          };
 
          app.ports.play.subscribe(function (args) {
-           var frequency = args.frequency;
-           var duration = args.duration;
-           playNote(frequency, duration);
+           playNote(args.frequency, args.duration);
          });
 
         </script>
