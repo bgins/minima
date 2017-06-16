@@ -1,6 +1,6 @@
 module Update exposing (..)
 
-import List.Extra exposing (..)
+import List.Extra exposing ((!!), elemIndex)
 import Time exposing (Time)
 import Model exposing (..)
 import Ports exposing (..)

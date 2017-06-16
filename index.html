@@ -3,7 +3,6 @@
     <head>
       <title>minima</title>
       <meta charset="utf-8" />
-      <!-- <link href="https://fonts.googleapis.com/css?family=Cinzel:400" rel="stylesheet"> -->
       <link href="https://fonts.googleapis.com/css?family=Cinzel|Quattrocento+Sans" rel="stylesheet">
       <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation-flex.min.css" rel="stylesheet">
       <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
@@ -52,7 +51,7 @@
            amp.gain.exponentialRampToValueAtTime(0.0001, now + duration);  // release
 
            osc.start();
-           osc.stop(now + duration);  // overshoot duration for release
+           osc.stop(now + duration);
          };
 
          app.ports.play.subscribe(function (args) {

@@ -1,7 +1,7 @@
-module View exposing (..)
+module View exposing (view)
 
-import Html exposing (..)
-import Html.Attributes exposing (..)
+import Html exposing (Html, text, a, div, h1, p, span)
+import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Model exposing (Model, Voice, Score, Direction)
 import Update exposing (..)
