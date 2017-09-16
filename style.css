@@ -20,12 +20,20 @@ h1 {
   margin: 1rem 0 2rem 0;
 }
 
-a.control {
+a.control, a.text-chevron {
   margin: 0 0.5em 0 0.5em;
+}
+
+a.block, a.text-chevron {
+  cursor: default;
 }
 
 a.secondary {
   color: #767676;
+}
+
+a.block:hover {
+  background-color: #1779ba;
 }
 
 span.clock {

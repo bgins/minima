@@ -47,15 +47,17 @@ renderAction action =
     let
         block duration text =
             div [ class ("column small-" ++ toString duration) ] text
+
         space =
-            [ text "\x2002" ] -- unicode space
+            [ text "\x2002" ]
     in
         case action of
             Model.Play duration ->
-                block duration [ a [ class "expanded button" ] space ]
+                block duration [ a [ class "block expanded button" ] space ]
 
             Model.Rest duration ->
                 block duration space
+
 
 rotateVoice : Voice -> Direction -> Html Msg
 rotateVoice voice direction =
@@ -101,9 +103,9 @@ instructions clock =
                 ]
             , p []
                 [ text " Select patterns with the "
-                , a [ class "control secondary fa fa-chevron-left" ] []
+                , a [ class "text-chevron secondary fa fa-chevron-left" ] []
                 , text "and  "
-                , a [ class "control secondary fa fa-chevron-right" ] []
+                , a [ class "text-chevron secondary fa fa-chevron-right" ] []
                 , text "buttons."
                 ]
             , p []
