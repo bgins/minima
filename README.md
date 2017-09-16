@@ -1,6 +1,8 @@
 # minima
 A web audio playground for minimalist music
 
+Live demo: https://brianginsburg.com/minima/
+
 ## Setup
 Install Elm: https://guide.elm-lang.org/install.html
 
