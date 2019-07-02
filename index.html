@@ -1,64 +1,68 @@
-<!doctype HTML>
+<!DOCTYPE html>
 <html>
-    <head>
-      <title>minima</title>
-      <meta charset="utf-8" />
-      <link href="https://fonts.googleapis.com/css?family=Cinzel|Quattrocento+Sans" rel="stylesheet">
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation-flex.min.css" rel="stylesheet">
-      <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
-      <link rel="stylesheet" href="style.css">
-    </head>
+  <head>
+    <title>minima</title>
+    <meta charset="utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Cinzel|Quattrocento+Sans"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation-flex.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-    <body>
-        <div id="main"></div>
-        <script type="text/javascript" src="main.js"></script>
-        <script>
-         "use strict"
-         var app = Elm.Main.fullscreen();
+  <body>
+    <div id="main"></div>
+    <script type="text/javascript" src="main.js"></script>
+    <script>
+      'use strict';
+      var app = Elm.Main.init({
+        node: document.getElementById('main')
+      });
 
-         var context = new (window.AudioContext || window.webkitAudioContext)();
+      var context = new (window.AudioContext || window.webkitAudioContext)();
 
-         var waveform = 'sine',
-             filterType = 'lowpass',
-             cutoff = 3000,
-             gain = 0.2;
+      var waveform = 'sine',
+        filterType = 'lowpass',
+        cutoff = 3000,
+        gain = 0.2;
 
-         var filter = context.createBiquadFilter();
-         filter.type = filterType;
-         filter.frequency.value = cutoff;
-         filter.connect(context.destination);
+      var filter = context.createBiquadFilter();
+      filter.type = filterType;
+      filter.frequency.value = cutoff;
+      filter.connect(context.destination);
 
+      function playNote(frequency, duration) {
+        // intstantiate and initialize nodes
+        var osc = context.createOscillator();
+        var amp = context.createGain();
+        osc.type = waveform;
+        osc.frequency.value = frequency;
+        amp.gain.value = gain;
 
-         function playNote (frequency, duration) {
+        // routing
+        osc.connect(amp);
+        amp.connect(filter);
 
-           // intstantiate and initialize nodes
-           var osc = context.createOscillator();
-           var amp = context.createGain();
-           osc.type = waveform;
-           osc.frequency.value = frequency;
-           amp.gain.value = gain;
+        // set timing and amp envelope
+        var now = context.currentTime;
+        amp.gain.cancelScheduledValues(now);
+        amp.gain.linearRampToValueAtTime(gain + 0.05, now + 0.03); // attack
+        amp.gain.setTargetAtTime(gain, now + 0.03, 0.01); // decay
+        amp.gain.setValueAtTime(gain, now + 0.03); // set mark for release
+        amp.gain.exponentialRampToValueAtTime(0.0001, now + duration); // release
 
-           // routing
-           osc.connect(amp);
-           amp.connect(filter);
+        osc.start();
+        osc.stop(now + duration);
+      }
 
-           // set timing and amp envelope
-           var now = context.currentTime;
-           amp.gain.cancelScheduledValues(now);
-           amp.gain.linearRampToValueAtTime(gain + 0.05, now + 0.03);  // attack
-           amp.gain.setTargetAtTime(gain, now + 0.03, 0.01);  // decay
-           amp.gain.setValueAtTime(gain, now + 0.03);  // set mark for release
-           amp.gain.exponentialRampToValueAtTime(0.0001, now + duration);  // release
-
-           osc.start();
-           osc.stop(now + duration);
-         };
-
-         app.ports.play.subscribe(function (args) {
-           playNote(args.frequency, args.duration);
-         });
-
-        </script>
-    </body>
-
+      app.ports.play.subscribe(function(args) {
+        playNote(args.frequency, args.duration);
+      });
+    </script>
+  </body>
 </html>

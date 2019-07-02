@@ -1,4 +1,4 @@
-module Model exposing (..)
+module Model exposing (Action(..), Direction(..), Model, Note, Pattern, Score, Voice, model, patterns)
 
 
 type alias Model =

@@ -1,15 +1,16 @@
-module Main exposing (..)
+module Main exposing (init, main, subscriptions)
 
+import Browser
 import Html exposing (Html)
-import Time exposing (every, second)
 import Model exposing (Model, model)
+import Time exposing (every)
 import Update exposing (..)
 import View exposing (view)
 
 
-main : Program Never Model Msg
+main : Program () Model Msg
 main =
-    Html.program
+    Browser.element
         { init = init
         , view = view
         , update = update
@@ -17,8 +18,8 @@ main =
         }
 
 
-init : ( Model, Cmd Msg )
-init =
+init : () -> ( Model, Cmd Msg )
+init _ =
     ( model
     , Cmd.none
     )
@@ -26,4 +27,4 @@ init =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    every second Tick
+    every 1000 Tick
