@@ -20,11 +20,13 @@ h1 {
   margin: 1rem 0 2rem 0;
 }
 
-a.control, a.text-chevron {
+a.control,
+a.text-chevron {
   margin: 0 0.5em 0 0.5em;
 }
 
-a.block, a.text-chevron {
+a.block,
+a.text-chevron {
   cursor: default;
 }
 

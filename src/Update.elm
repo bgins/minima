@@ -1,13 +1,13 @@
-module Update exposing (..)
+module Update exposing (Msg(..), filterFrequency, getPatternAt, increment, playNotes, read, readPattern, rotate, update)
 
-import List.Extra exposing ((!!), elemIndex)
-import Time exposing (Time)
+import List.Extra exposing (elemIndex, getAt)
 import Model exposing (..)
 import Ports exposing (..)
+import Time exposing (Posix)
 
 
 type Msg
-    = Tick Time
+    = Tick Posix
     | Play
     | Pause
     | Rotate Voice Direction
@@ -17,49 +17,60 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Tick time ->
-            { model
+            ( { model
                 | clock = increment model.clock model.ticks
-            }
-                ! [ Cmd.batch (playNotes model.score model.clock) ]
+              }
+            , Cmd.batch (playNotes model.score model.clock)
+            )
 
         Play ->
-            { model | clock = 1 } ! []
+            ( { model | clock = 1 }
+            , Cmd.none
+            )
 
         Pause ->
-            { model | clock = 0 } ! []
+            ( { model | clock = 0 }
+            , Cmd.none
+            )
 
         Rotate voice direction ->
             case voice.id of
                 "one" ->
-                    { model
+                    ( { model
                         | one = rotate voice direction
                         , score = read voice direction model.score
-                    }
-                        ! []
+                      }
+                    , Cmd.none
+                    )
 
                 "two" ->
-                    { model
+                    ( { model
                         | two = rotate voice direction
                         , score = read voice direction model.score
-                    }
-                        ! []
+                      }
+                    , Cmd.none
+                    )
 
                 "three" ->
-                    { model
+                    ( { model
                         | three = rotate voice direction
                         , score = read voice direction model.score
-                    }
-                        ! []
+                      }
+                    , Cmd.none
+                    )
 
                 "four" ->
-                    { model
+                    ( { model
                         | four = rotate voice direction
                         , score = read voice direction model.score
-                    }
-                        ! []
+                      }
+                    , Cmd.none
+                    )
 
                 _ ->
-                    model ! []
+                    ( model
+                    , Cmd.none
+                    )
 
 
 increment : Int -> Int -> Int
@@ -69,7 +80,7 @@ increment clock ticks =
             0
 
         _ ->
-            (clock % ticks) + 1
+            modBy ticks clock + 1
 
 
 playNotes : Score -> Int -> List (Cmd msg)
@@ -84,8 +95,8 @@ playNotes score clock =
 
 read : Voice -> Direction -> Score -> Score
 read voice direction score =
-    (readPattern 1 voice (.pattern (rotate voice direction)) score)
-        ++ (filterFrequency voice score)
+    readPattern 1 voice (.pattern (rotate voice direction)) score
+        ++ filterFrequency voice score
 
 
 readPattern : Int -> Voice -> Pattern -> Score -> Score
@@ -97,7 +108,7 @@ readPattern count voice pattern score =
         p :: ps ->
             case p of
                 Model.Play n ->
-                    (Note (.frequency voice) n count)
+                    Note (.frequency voice) n count
                         :: readPattern (n + count) voice ps score
 
                 Model.Rest n ->
@@ -119,10 +130,10 @@ rotate voice direction =
         Just n ->
             case direction of
                 Model.Left ->
-                    { voice | pattern = getPatternAt ((n - 1) % List.length patterns) }
+                    { voice | pattern = getPatternAt (modBy (List.length patterns) (n - 1)) }
 
                 Model.Right ->
-                    { voice | pattern = getPatternAt ((n + 1) % List.length patterns) }
+                    { voice | pattern = getPatternAt (modBy (List.length patterns) (n + 1)) }
 
         Nothing ->
             { voice | pattern = voice.pattern }
@@ -130,7 +141,7 @@ rotate voice direction =
 
 getPatternAt : Int -> Pattern
 getPatternAt index =
-    case patterns !! index of
+    case getAt index patterns of
         Just pattern ->
             pattern
 

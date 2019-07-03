@@ -1,9 +1,9 @@
 module View exposing (view)
 
-import Html exposing (Html, text, a, div, h1, p, span)
+import Html exposing (Html, a, div, h1, p, span, text)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
-import Model exposing (Model, Voice, Score, Direction)
+import Model exposing (Direction, Model, Score, Voice)
 import Update exposing (..)
 
 
@@ -46,17 +46,17 @@ renderAction : Model.Action -> Html Msg
 renderAction action =
     let
         block duration text =
-            div [ class ("column small-" ++ toString duration) ] text
+            div [ class ("column small-" ++ String.fromInt duration) ] text
 
         space =
-            [ text "\x2002" ]
+            [ text "\u{2002}" ]
     in
-        case action of
-            Model.Play duration ->
-                block duration [ a [ class "block expanded button" ] space ]
+    case action of
+        Model.Play duration ->
+            block duration [ a [ class "block expanded button" ] space ]
 
-            Model.Rest duration ->
-                block duration space
+        Model.Rest duration ->
+            block duration space
 
 
 rotateVoice : Voice -> Direction -> Html Msg
@@ -84,7 +84,7 @@ counter current last =
             []
 
         False ->
-            [ div [ class "column small-1" ] [ text (toString current) ] ]
+            [ div [ class "column small-1" ] [ text (String.fromInt current) ] ]
                 ++ counter (current + 1) last
 
 
@@ -128,7 +128,7 @@ showClock clock =
             "4"
 
         _ ->
-            toString (clock - 1)
+            String.fromInt (clock - 1)
 
 
 
