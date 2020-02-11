@@ -2,7 +2,7 @@
 
 A web audio playground for minimalist music.
 
-Live demo: https://brianginsburg.com/minima/
+Live demo: https://minima.brianginsburg.com/
 
 ## Setup
 
